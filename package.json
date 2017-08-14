@@ -1,0 +1,28 @@
+{
+  "name": "buddypay",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "async": "^2.0.0-rc.3",
+    "body-parser": "^1.15.0",
+    "bunyan": "^1.8.1",
+    "express": "^4.12.3",
+    "mongoose": "^4.4.14",
+    "node-gcm": "^0.14.0",
+    "swagger-express-mw": "^0.1.0",
+    "swagger-tools": "^0.10.1"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "swagger project test"
+  }
+}

@@ -1,0 +1,284 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Buddypay App
+# during dev, should point to your local machine
+host: localhost:9000
+# basePath prefixes all resource paths 
+basePath: /v1.0/buddypay
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /users/registerUser:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: userController
+    post:
+      description: Register User
+      # used as the method name of the controller
+      operationId: registerUser
+      consumes:
+        - application/json
+      produces:
+        - application/json  
+      parameters:
+        - name: userDetails
+          in: body
+          description: For registering user
+          required: true
+          schema: 
+            $ref: "#/definitions/userRegisterationSchemaRequest"
+      responses:
+        "200":
+          description: Success user registration 
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/userRegisterationSchemaResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /users/activeUser:
+    x-swagger-router-controller: userController
+    post: 
+      description: Active Registered User
+      operationId: activeUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: mobileNumber
+          in: body
+          description: For activating registered user
+          required: true
+          schema:
+            $ref: "#/definitions/userActivationSchemaRequest"
+      responses:
+        "200":
+          description: Success user activation
+          schema:
+            $ref: "#/definitions/userActivationSchemaResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"    
+  /users/login:
+    x-swagger-router-controller: userController
+    post: 
+      description: login user
+      operationId: loginUser
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: userCredentials
+          in: body
+          description: For login user
+          required: true
+          schema:
+            $ref: "#/definitions/userLoginSchemaRequest"
+      responses:
+        "200":
+          description: Succes Login
+          schema:
+            $ref: "#/definitions/userSchema"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+  /users/changePassword:
+    x-swagger-router-controller: userController
+    post:
+      description: Change User password
+      operationId: changePassword
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: changeUserPassword
+          in: body
+          description: User with old and new password
+          required: true
+          schema: 
+            $ref: "#/definitions/changePasswordSchemaRequest"
+      responses:
+        "200":
+          description: Success change password
+          schema:
+            $ref: "#/definitions/changePasswordSchemaResponse"
+        default:
+            description: Error
+            schema: 
+              $ref: "#/definitions/ErrorResponse"
+  /device/registerDevice:
+    x-swagger-router-controller: deviceController
+    post:
+      description: Register Device
+      operationId: registerDevice
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: registerDeviceParameter
+          in: body
+          description: Register device 
+          required: true
+          schema: 
+            $ref: "#/definitions/registerDeviceSchemaRequest"
+      responses:
+        "200":
+          description: Success register device
+          schema:
+            $ref: "#/definitions/registerDeviceSchemaResponse"
+        default:
+            description: Error
+            schema: 
+              $ref: "#/definitions/ErrorResponse"   
+  /buddy/addBuddy:
+    x-swagger-router-controller: buddyController
+    post:
+      description: Add buddy
+      operationId: addBuddy
+      consumes: 
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: addBuddyDetails
+          in: body
+          description: Adding Buddy
+          required: true
+          schema: 
+            $ref: "#/definitions/addBuddySchemaRequest"
+      responses:  
+        "200":
+          description: Success adding buddy
+          schema:
+            $ref: "#/definitions/addBuddySchemaResponse"
+        default:
+          description: Error
+          schema: 
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  userSchema:
+    required:
+      - mobile_no
+      - email
+      - username
+      - status_flag
+    properties:
+      mobile_no:
+        type: integer
+      email:
+        type: string
+      username:
+        type: string
+      status_flag:
+        type: integer
+  userRegisterationSchemaRequest:
+    required:
+      - mobile_no
+      - email
+      - username
+      - password
+    properties:
+      mobile_no:
+         type: integer
+      email:
+         type: string   
+      username:
+         type: string
+      password:
+         type: string
+  userActivationSchemaRequest:
+    required:
+      - mobile_no
+      - otp
+    properties:
+      mobile_no:
+        type: integer
+      otp:
+        type: integer       
+  userLoginSchemaRequest:
+    required:
+      - mobile_no
+      - password
+    properties:
+      mobile_no:
+        type: integer
+      password:
+        type: string
+  changePasswordSchemaRequest:
+    required:
+      - mobile_no
+      - old_password
+      - new_password
+    properties:
+      mobile_no:
+        type: integer
+      old_password:
+        type: string
+      new_password:
+        type: string
+  registerDeviceSchemaRequest:
+    required:
+      - mobile_no
+      - mobile_imei
+    properties:
+      mobile_no:
+        type: integer
+      mobile_imei:
+        type: string
+  addBuddySchemaRequest:
+    required:
+      - mobile_no
+      - buddy_mobile_no
+    properties:
+      mobile_no:
+        type: integer
+      buddy_mobile_no:
+        type: integer
+  userRegisterationSchemaResponse:
+    properties:      
+      success:
+        type: string
+      otp:
+        type: integer
+  userActivationSchemaResponse:
+    properties:
+      success:
+        type: string
+  changePasswordSchemaResponse:
+    properties:
+      success:
+        type: string      
+  registerDeviceSchemaResponse:
+    properties:
+      success:
+        type: string
+  addBuddySchemaResponse:
+    properties:
+      success:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
