@@ -49,6 +49,8 @@ var callBackFilter =  function(req, res, next){
 			var userMobileNumber  = {
 				mobile_no : req.body.mobile_no,
 			}
+
+			console.log('active user req - requested user:'+JSON.stringify(req.body));
 			userDao.getUser(userMobileNumber,function(err,data){
 
 					if(err){

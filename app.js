@@ -27,5 +27,5 @@ SwaggerExpress.create(config, function(err, swaggerExpress){
 
   var port = process.env.PORT || 9000;
   app.listen(port);
-  console.log('app : Server running successfully ... ');
+  console.log('app : Server running successfully on '+port+'... ');
 });

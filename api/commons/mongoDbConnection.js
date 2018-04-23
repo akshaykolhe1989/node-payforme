@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/buddypay_app');
+mongoose.connect('mongodb://localhost/buddypay_app', { useMongoClient: true });
 
 var connection = mongoose.connection;
 
